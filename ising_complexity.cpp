@@ -1,4 +1,3 @@
-#pragma once
 #include "ising_complexity.hpp"
 #include <numeric>
 #include <random>
@@ -26,13 +25,14 @@ void renorm(Matrix &mat, const unsigned long L) {
   }
 }
 
+// Helper function
 [[nodiscard]]
 double find_matrix_mean(const Matrix &mat) {
   double sum = 0.0;
   for (unsigned long i = 0; i < mat.size(); i++) {
     sum += std::accumulate(mat[i].begin(), mat[i].end(), 0.0);
   }
-  return sum / mat.size() / mat.size();
+  return sum / (mat.size() * mat.size());
 }
 
 [[nodiscard]]
@@ -57,13 +57,9 @@ double find_structural_complexity(Matrix &mat, unsigned long lambda) {
   for (std::size_t i = 0; i < n_overlaps; i++) {
     Matrix mat_old(mat);
     renorm(mat, lambda); // changes `mat`
-    /// TODO: uncomment to see `mat` changing
-    // std::cout << "Iter " << i + 1 << '\n';
-    // print_matrix(mat);
-    // std::cout << '\n';
     sum += find_overlap(mat_old, mat) -
            0.5 * (find_overlap(mat, mat) + find_overlap(mat_old, mat_old));
-    lambda *= 2;
+    lambda *= 2; // Increasing block size
   }
 
   return std::abs(sum);
@@ -94,6 +90,7 @@ double get_delta_energy(Matrix &grid, const unsigned long x,
   const unsigned long top_y = (y + 1) % L;
   const unsigned long bot_y = y == 0 ? L - 1 : y - 1;
 
+  // Each spin is connected only with its neighbors
   return 2 * grid[x][y] *
          (grid[right_x][y] + grid[left_x][y] + grid[x][top_y] + grid[x][bot_y]);
 }

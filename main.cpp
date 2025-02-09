@@ -7,7 +7,8 @@
 int main() {
   const unsigned long L = 30; // Linear size of square matrix
   const unsigned long n_steps = 300000;
-  const unsigned long num_mean_iter = 3;
+  const unsigned long num_mean_iter = 10;
+  const unsigned long lambda = 2;
   const double T_init = 5.0;
   const double T_final = 0.0;
   const double T_step = 0.01;
@@ -23,6 +24,7 @@ int main() {
   std::vector<std::vector<double>> complexities_for_mean(num_mean_iter);
   std::vector<std::vector<double>> temperatures_for_mean(num_mean_iter);
 
+  // Main loop
   for (unsigned long iter = 0; iter < num_mean_iter; iter++) {
     Matrix grid = gen_matrix(L);
     std::vector<double> complexities;
@@ -32,21 +34,22 @@ int main() {
         const unsigned long x = dist(gen);
         const unsigned long y = dist(gen);
         const double dE = get_delta_energy(grid, x, y);
-        grid[x][y] *= -1;
+        grid[x][y] *= -1; // try swap spin
         if (dE > 0) {
           if (dist1(gen1) >= std::exp(-dE / T)) {
-            grid[x][y] *= -1;
+            grid[x][y] *= -1; // swap spin back
           }
         }
       }
       Matrix temp_grid(grid); // copy
-      complexities.push_back(find_structural_complexity(temp_grid, 2));
+      complexities.push_back(find_structural_complexity(temp_grid, lambda));
       temperatures.push_back(T);
     }
     complexities_for_mean[iter] = complexities;
     temperatures_for_mean[iter] = temperatures;
   }
 
+  // Averaging the results
   std::vector<double> complexities(T_init / T_step);
   std::vector<double> temperatures(T_init / T_step);
   for (unsigned long iter = 0; iter < T_init / T_step; iter++) {
@@ -59,5 +62,6 @@ int main() {
     complexities[iter] = c_sum / num_mean_iter;
     temperatures[iter] = t_sum / num_mean_iter;
   }
+  // Write into "data.txt"
   write_vecs(temperatures, complexities);
 }

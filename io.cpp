@@ -1,4 +1,3 @@
-#pragma once
 #include "io.hpp"
 #include <fstream>
 #include <iostream>
