@@ -4,6 +4,15 @@
 
 # Usage
 
+## Prerequisite
+- git
+- make
+- clang++
+- python
+- [matplotlib](https://matplotlib.org/stable/install/index.html)
+
+## Build
+
 ```bash
 git clone https://github.com/moriar1/ising-complexity
 cd ising-complexity
