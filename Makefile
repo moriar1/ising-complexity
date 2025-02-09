@@ -21,7 +21,7 @@ $(BINDIR):
 	mkdir -p $@
 
 $(BINDIR)/$(EXECUTABLE): $(OBJECTS) | $(BINDIR)
-	$(CXX) $(CXXFLAGS) -o $@ $^  # Compile all object files into the executable
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@

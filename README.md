@@ -14,4 +14,5 @@ python3 visualize.py
 
 # Results example
 
-![](./example.png)
+![](./example1.png)
+![](./example2.png)
