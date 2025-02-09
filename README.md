@@ -9,6 +9,7 @@
 - make
 - clang++
 - python
+- [numpy](https://pypi.org/project/numpy)
 - [matplotlib](https://matplotlib.org/stable/install/index.html)
 
 ## Build
