@@ -1,19 +1,30 @@
 CC = clang
 CXX = clang++
-CXXFLAGS = -Wall -Wextra -pedantic -O3
+CXXFLAGS = -Wall -Wextra -pedantic -O3 -I include
 .PHONY: all clean
 
-SOURCES = io.cpp ising_complexity.cpp main.cpp
-OBJECTS = $(SOURCES:.cpp=.o)
-EXECUTABLE = ising_complexity
+SRCDIR := src
+OBJDIR := obj
+INCDIR := include
+BINDIR := bin
 
-all: $(EXECUTABLE)
+SOURCES := $(wildcard $(SRCDIR)/*.cpp)  # Automatically find .cpp files in src
+OBJECTS := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SOURCES)) # Convert src/*.cpp to obj/*.o
+EXECUTABLE := ising_complexity
 
-$(EXECUTABLE): $(OBJECTS)
-	$(CXX) $(OBJECTS) -o $(EXECUTABLE)
+all: $(BINDIR)/$(EXECUTABLE)
 
-%.o: %.cpp %.h
-	$(CXX) $(CXXFLAGS) $< -o $@
+$(OBJDIR):
+	mkdir -p $@
+
+$(BINDIR):
+	mkdir -p $@
+
+$(BINDIR)/$(EXECUTABLE): $(OBJECTS) | $(BINDIR)
+	$(CXX) $(CXXFLAGS) -o $@ $^  # Compile all object files into the executable
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJECTS) $(EXECUTABLE)
+	rm -rf $(OBJDIR) $(BINDIR)

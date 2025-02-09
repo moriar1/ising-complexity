@@ -8,6 +8,10 @@
 git clone https://github.com/moriar1/ising-complexity
 cd ising-complexity
 make
-./ising_complexity
+./bin/ising_complexity
 python3 visualize.py
 ```
+
+# Results example
+
+![](./example.png)

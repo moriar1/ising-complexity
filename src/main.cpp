@@ -2,6 +2,8 @@
 #include "ising_complexity.hpp"
 #include <random>
 
+using Matrix = std::vector<std::vector<double>>;
+
 // TODO: add error estimation
 // TODO: refactoring (Monte Carlo in separate function, parallel)
 int main() {
