@@ -57,12 +57,13 @@ double find_structural_complexity(Matrix &mat, unsigned long lambda) {
   for (std::size_t i = 0; i < n_overlaps; i++) {
     Matrix mat_old(mat);
     renorm(mat, lambda); // changes `mat`
-    sum += find_overlap(mat_old, mat) -
-           0.5 * (find_overlap(mat, mat) + find_overlap(mat_old, mat_old));
+    sum += std::abs(
+        find_overlap(mat_old, mat) -
+        0.5 * (find_overlap(mat, mat) + find_overlap(mat_old, mat_old)));
     lambda *= 2; // Increasing block size
   }
 
-  return std::abs(sum);
+  return sum;
 }
 
 [[nodiscard]]
